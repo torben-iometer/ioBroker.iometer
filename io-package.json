@@ -1,0 +1,83 @@
+{
+	"common": {
+		"name": "iometer",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"uk": "Початкова версія",
+				"zh-cn": "首次出版"
+			}
+		},
+		"titleLang": {
+			"en": "IOmeter",
+			"de": "IOmeter",
+			"ru": "IOmeter",
+			"pt": "IOmeter",
+			"nl": "IOmeter",
+			"fr": "IOmeter",
+			"it": "IOmeter",
+			"es": "IOmeter",
+			"pl": "IOmeter",
+			"uk": "IOmeter",
+			"zh-cn": "IOmeter"
+		},
+		"desc": {
+			"en": "ioBroker adapter for the IOmeter smart metering device",
+			"de": "ioBroker adapter for the IOmeter smart metering device",
+			"ru": "ioBroker adapter for the IOmeter smart metering device",
+			"pt": "ioBroker adapter for the IOmeter smart metering device",
+			"nl": "ioBroker adapter for the IOmeter smart metering device",
+			"fr": "ioBroker adapter for the IOmeter smart metering device",
+			"it": "ioBroker adapter for the IOmeter smart metering device",
+			"es": "ioBroker adapter for the IOmeter smart metering device",
+			"pl": "ioBroker adapter for the IOmeter smart metering device",
+			"uk": "ioBroker adapter for the IOmeter smart metering device",
+			"zh-cn": "ioBroker adapter for the IOmeter smart metering device"
+		},
+		"authors": ["torben-iometer <torben@iometer.de>"],
+		"keywords": ["IOmeter", "smart meter", "electricity", "zero feed-in", "zero export"],
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
+		"platform": "Javascript/Node.js",
+		"icon": "iometer.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/torben-iometer/ioBroker.iometer/main/admin/iometer.png",
+		"readme": "https://github.com/torben-iometer/ioBroker.iometer/blob/main/README.md",
+		"loglevel": "info",
+		"tier": 3,
+		"restartAdapters": ["vis"],
+		"mode": "daemon",
+		"type": "visualization-widgets",
+		"compact": true,
+		"connectionType": "local",
+		"dataSource": "push",
+		"adminUI": {
+			"config": "json"
+		},
+		"dependencies": [
+			{
+				"js-controller": ">=6.0.11"
+			},
+			"vis"
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=7.0.23"
+			}
+		]
+	},
+	"native": {},
+	"objects": [],
+	"instanceObjects": []
+}
