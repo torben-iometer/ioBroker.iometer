@@ -2,29 +2,30 @@
 
 const utils = require('@iobroker/adapter-core');
 const EventSource = require('eventsource');
+const { parseReading, parseStatus, OBIS_MAP } = require('./lib/iometer-parser');
 
-// OBIS code → state mapping (reading.power is handled separately with fallback)
-const OBIS_MAP = [
-	{ obis: '01-00:24.07.00*ff', id: 'reading.power_phase1',       name: 'Power Phase 1',             unit: 'W',   role: 'value.power.active',    factor: 1     },
-	{ obis: '01-00:38.07.00*ff', id: 'reading.power_phase2',       name: 'Power Phase 2',             unit: 'W',   role: 'value.power.active',    factor: 1     },
-	{ obis: '01-00:4c.07.00*ff', id: 'reading.power_phase3',       name: 'Power Phase 3',             unit: 'W',   role: 'value.power.active',    factor: 1     },
-	{ obis: '01-00:01.08.00*ff', id: 'reading.energy_imported',    name: 'Energy Imported Total',     unit: 'kWh', role: 'value.energy.consumed', factor: 0.001 },
-	{ obis: '01-00:02.08.00*ff', id: 'reading.energy_exported',    name: 'Energy Exported Total',     unit: 'kWh', role: 'value.energy.produced', factor: 0.001 },
-	{ obis: '01-00:01.08.01*ff', id: 'reading.energy_imported_t1', name: 'Energy Imported Tariff 1', unit: 'kWh', role: 'value.energy.consumed', factor: 0.001 },
-	{ obis: '01-00:01.08.02*ff', id: 'reading.energy_imported_t2', name: 'Energy Imported Tariff 2', unit: 'kWh', role: 'value.energy.consumed', factor: 0.001 },
-];
+// State metadata for object creation — name/unit/role per OBIS entry
+const OBIS_META = {
+	'reading.power_phase1':       { name: 'Power Phase 1',            unit: 'W',   role: 'value.power.active'    },
+	'reading.power_phase2':       { name: 'Power Phase 2',            unit: 'W',   role: 'value.power.active'    },
+	'reading.power_phase3':       { name: 'Power Phase 3',            unit: 'W',   role: 'value.power.active'    },
+	'reading.energy_imported':    { name: 'Energy Imported Total',    unit: 'kWh', role: 'value.energy.consumed' },
+	'reading.energy_exported':    { name: 'Energy Exported Total',    unit: 'kWh', role: 'value.energy.produced' },
+	'reading.energy_imported_t1': { name: 'Energy Imported Tariff 1', unit: 'kWh', role: 'value.energy.consumed' },
+	'reading.energy_imported_t2': { name: 'Energy Imported Tariff 2', unit: 'kWh', role: 'value.energy.consumed' },
+};
 
 /** @type {Array<{id: string, name: string, type: 'string' | 'number', role: string, unit: string | undefined}>} */
 const DEVICE_STATES = [
-	{ id: 'device.id',                name: 'Device ID',          type: 'string', role: 'info.serial',   unit: undefined },
-	{ id: 'device.meter_number',      name: 'Meter Number',       type: 'string', role: 'info.serial',   unit: undefined },
-	{ id: 'device.bridge_rssi',       name: 'Bridge WiFi RSSI',   type: 'number', role: 'value.rssi',    unit: 'dBm'     },
-	{ id: 'device.bridge_firmware',   name: 'Bridge Firmware',    type: 'string', role: 'info.firmware', unit: undefined },
-	{ id: 'device.core_rssi',         name: 'Core RSSI',          type: 'number', role: 'value.rssi',    unit: 'dBm'     },
-	{ id: 'device.core_firmware',     name: 'Core Firmware',      type: 'string', role: 'info.firmware', unit: undefined },
-	{ id: 'device.battery_level',     name: 'Battery Level',      type: 'number', role: 'value.battery', unit: '%'       },
-	{ id: 'device.power_status',      name: 'Power Status',       type: 'string', role: 'info.status',   unit: undefined },
-	{ id: 'device.attachment_status', name: 'Attachment Status',  type: 'string', role: 'info.status',   unit: undefined },
+	{ id: 'device.id',                name: 'Device ID',         type: 'string', role: 'info.serial',   unit: undefined },
+	{ id: 'device.meter_number',      name: 'Meter Number',      type: 'string', role: 'info.serial',   unit: undefined },
+	{ id: 'device.bridge_rssi',       name: 'Bridge WiFi RSSI',  type: 'number', role: 'value.rssi',    unit: 'dBm'     },
+	{ id: 'device.bridge_firmware',   name: 'Bridge Firmware',   type: 'string', role: 'info.firmware', unit: undefined },
+	{ id: 'device.core_rssi',         name: 'Core RSSI',         type: 'number', role: 'value.rssi',    unit: 'dBm'     },
+	{ id: 'device.core_firmware',     name: 'Core Firmware',     type: 'string', role: 'info.firmware', unit: undefined },
+	{ id: 'device.battery_level',     name: 'Battery Level',     type: 'number', role: 'value.battery', unit: '%'       },
+	{ id: 'device.power_status',      name: 'Power Status',      type: 'string', role: 'info.status',   unit: undefined },
+	{ id: 'device.attachment_status', name: 'Attachment Status', type: 'string', role: 'info.status',   unit: undefined },
 ];
 
 class Iometer extends utils.Adapter {
@@ -66,10 +67,11 @@ class Iometer extends utils.Adapter {
 			native: {},
 		});
 
-		for (const def of OBIS_MAP) {
-			await this.setObjectNotExistsAsync(def.id, {
+		for (const { id } of OBIS_MAP) {
+			const meta = OBIS_META[id];
+			await this.setObjectNotExistsAsync(id, {
 				type: 'state',
-				common: { name: def.name, type: 'number', role: def.role, unit: def.unit, read: true, write: false },
+				common: { name: meta.name, type: 'number', role: meta.role, unit: meta.unit, read: true, write: false },
 				native: {},
 			});
 		}
@@ -96,7 +98,9 @@ class Iometer extends utils.Adapter {
 		this._readingSource.addEventListener('readingEvent', (event) => {
 			try {
 				const data = JSON.parse(event.data);
-				this._processReading(data);
+				for (const { id, val } of parseReading(data)) {
+					this.setState(id, { val, ack: true });
+				}
 				this.setState('info.connection', true, true);
 			} catch (err) {
 				this.log.error(`Failed to process reading event: ${err.message}`);
@@ -122,7 +126,9 @@ class Iometer extends utils.Adapter {
 		this._statusSource.addEventListener('statusEvent', (event) => {
 			try {
 				const data = JSON.parse(event.data);
-				this._processStatus(data);
+				for (const { id, val } of parseStatus(data)) {
+					this.setState(id, { val, ack: true });
+				}
 			} catch (err) {
 				this.log.error(`Failed to process status event: ${err.message}`);
 			}
@@ -135,52 +141,6 @@ class Iometer extends utils.Adapter {
 		this._statusSource.onerror = (err) => {
 			this.log.warn(`Status stream error (will retry): ${JSON.stringify(err)}`);
 		};
-	}
-
-	_processReading(data) {
-		const registers = data?.meter?.reading?.registers;
-		if (!Array.isArray(registers)) return;
-
-		const obisValues = new Map(registers.map((r) => [r.obis, r.value]));
-
-		// Total power: prefer sum OBIS, fall back to Phase 1 (single-phase meters)
-		const totalPower = obisValues.has('01-00:10.07.00*ff')
-			? obisValues.get('01-00:10.07.00*ff')
-			: obisValues.get('01-00:24.07.00*ff');
-		if (totalPower !== undefined) {
-			this.setState('reading.power', { val: totalPower, ack: true });
-		}
-
-		for (const { obis, id, factor } of OBIS_MAP) {
-			const raw = obisValues.get(obis);
-			if (raw !== undefined) {
-				this.setState(id, { val: raw * factor, ack: true });
-			}
-		}
-	}
-
-	_processStatus(data) {
-		const device = data?.device;
-		if (!device) return;
-
-		if (device.id !== undefined) this.setState('device.id', { val: device.id, ack: true });
-
-		if (device.bridge) {
-			if (device.bridge.rssi !== undefined) this.setState('device.bridge_rssi', { val: device.bridge.rssi, ack: true });
-			if (device.bridge.version !== undefined) this.setState('device.bridge_firmware', { val: device.bridge.version, ack: true });
-		}
-
-		if (device.core) {
-			if (device.core.rssi !== undefined) this.setState('device.core_rssi', { val: device.core.rssi, ack: true });
-			if (device.core.version !== undefined) this.setState('device.core_firmware', { val: device.core.version, ack: true });
-			if (device.core.batteryLevel !== undefined) this.setState('device.battery_level', { val: device.core.batteryLevel, ack: true });
-			if (device.core.powerStatus !== undefined) this.setState('device.power_status', { val: device.core.powerStatus, ack: true });
-			if (device.core.attachmentStatus !== undefined) this.setState('device.attachment_status', { val: device.core.attachmentStatus, ack: true });
-		}
-
-		if (data.meter?.number !== undefined) {
-			this.setState('device.meter_number', { val: data.meter.number, ack: true });
-		}
 	}
 
 	onUnload(callback) {
