@@ -4,7 +4,7 @@
 	"items": {
 		"iometerIp": {
 			"type": "text",
-			"label": "iometer IP address",
+			"label": "IOmeter IP address",
 			"placeholder": "192.168.1.100",
 			"sm": 12,
 			"md": 6,
