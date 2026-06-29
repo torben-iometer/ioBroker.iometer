@@ -18,33 +18,33 @@
 			}
 		},
 		"titleLang": {
-			"en": "IOmeter",
-			"de": "IOmeter",
-			"ru": "IOmeter",
-			"pt": "IOmeter",
-			"nl": "IOmeter",
-			"fr": "IOmeter",
-			"it": "IOmeter",
-			"es": "IOmeter",
-			"pl": "IOmeter",
-			"uk": "IOmeter",
-			"zh-cn": "IOmeter"
+			"en": "iometer",
+			"de": "iometer",
+			"ru": "iometer",
+			"pt": "iometer",
+			"nl": "iometer",
+			"fr": "iometer",
+			"it": "iometer",
+			"es": "iometer",
+			"pl": "iometer",
+			"uk": "iometer",
+			"zh-cn": "iometer"
 		},
 		"desc": {
-			"en": "ioBroker adapter for the IOmeter smart metering device",
-			"de": "ioBroker adapter for the IOmeter smart metering device",
-			"ru": "ioBroker adapter for the IOmeter smart metering device",
-			"pt": "ioBroker adapter for the IOmeter smart metering device",
-			"nl": "ioBroker adapter for the IOmeter smart metering device",
-			"fr": "ioBroker adapter for the IOmeter smart metering device",
-			"it": "ioBroker adapter for the IOmeter smart metering device",
-			"es": "ioBroker adapter for the IOmeter smart metering device",
-			"pl": "ioBroker adapter for the IOmeter smart metering device",
-			"uk": "ioBroker adapter for the IOmeter smart metering device",
-			"zh-cn": "ioBroker adapter for the IOmeter smart metering device"
+			"en": "ioBroker adapter for the iometer smart metering device",
+			"de": "ioBroker-Adapter für das iometer Smart-Metering-Gerät",
+			"ru": "ioBroker adapter for the iometer smart metering device",
+			"pt": "ioBroker adapter for the iometer smart metering device",
+			"nl": "ioBroker adapter for the iometer smart metering device",
+			"fr": "ioBroker adapter for the iometer smart metering device",
+			"it": "ioBroker adapter for the iometer smart metering device",
+			"es": "ioBroker adapter for the iometer smart metering device",
+			"pl": "ioBroker adapter for the iometer smart metering device",
+			"uk": "ioBroker adapter for the iometer smart metering device",
+			"zh-cn": "ioBroker adapter for the iometer smart metering device"
 		},
 		"authors": ["torben-iometer <torben@iometer.de>"],
-		"keywords": ["IOmeter", "smart meter", "electricity", "zero feed-in", "zero export"],
+		"keywords": ["iometer", "smart meter", "electricity", "energy", "OBIS"],
 		"licenseInformation": {
 			"type": "free",
 			"license": "MIT"
@@ -56,9 +56,8 @@
 		"readme": "https://github.com/torben-iometer/ioBroker.iometer/blob/main/README.md",
 		"loglevel": "info",
 		"tier": 3,
-		"restartAdapters": ["vis"],
 		"mode": "daemon",
-		"type": "visualization-widgets",
+		"type": "energy",
 		"compact": true,
 		"connectionType": "local",
 		"dataSource": "push",
@@ -68,8 +67,7 @@
 		"dependencies": [
 			{
 				"js-controller": ">=6.0.11"
-			},
-			"vis"
+			}
 		],
 		"globalDependencies": [
 			{
@@ -77,7 +75,31 @@
 			}
 		]
 	},
-	"native": {},
+	"native": {
+		"iometerIp": ""
+	},
 	"objects": [],
-	"instanceObjects": []
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Connected to iometer",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		}
+	]
 }
