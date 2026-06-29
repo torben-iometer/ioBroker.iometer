@@ -5,26 +5,26 @@ const EventSource = require('eventsource');
 const { parseReading, parseStatus, OBIS_MAP } = require('./lib/iometer-parser');
 
 const OBIS_META = {
-	'power_phase1':       { name: 'Power Phase 1',            unit: 'W',   role: 'value.power.active'    },
-	'power_phase2':       { name: 'Power Phase 2',            unit: 'W',   role: 'value.power.active'    },
-	'power_phase3':       { name: 'Power Phase 3',            unit: 'W',   role: 'value.power.active'    },
-	'energy_imported':    { name: 'Energy Imported Total',    unit: 'kWh', role: 'value.energy.consumed' },
-	'energy_exported':    { name: 'Energy Exported Total',    unit: 'kWh', role: 'value.energy.produced' },
-	'energy_imported_t1': { name: 'Energy Imported Tariff 1', unit: 'kWh', role: 'value.energy.consumed' },
-	'energy_imported_t2': { name: 'Energy Imported Tariff 2', unit: 'kWh', role: 'value.energy.consumed' },
+	power_phase1: { name: 'Power Phase 1', unit: 'W', role: 'value.power.active' },
+	power_phase2: { name: 'Power Phase 2', unit: 'W', role: 'value.power.active' },
+	power_phase3: { name: 'Power Phase 3', unit: 'W', role: 'value.power.active' },
+	energy_imported: { name: 'Energy Imported Total', unit: 'kWh', role: 'value.energy.consumed' },
+	energy_exported: { name: 'Energy Exported Total', unit: 'kWh', role: 'value.energy.produced' },
+	energy_imported_t1: { name: 'Energy Imported Tariff 1', unit: 'kWh', role: 'value.energy.consumed' },
+	energy_imported_t2: { name: 'Energy Imported Tariff 2', unit: 'kWh', role: 'value.energy.consumed' },
 };
 
 /** @type {Array<{id: string, name: string, type: 'string' | 'number', role: string, unit: string | undefined}>} */
 const DEVICE_STATES = [
-	{ id: 'id',                name: 'Device ID',         type: 'string', role: 'info.serial',   unit: undefined },
-	{ id: 'meter_number',      name: 'Meter Number',      type: 'string', role: 'info.serial',   unit: undefined },
-	{ id: 'bridge_rssi',       name: 'Bridge WiFi RSSI',  type: 'number', role: 'value.rssi',    unit: 'dBm'     },
-	{ id: 'bridge_firmware',   name: 'Bridge Firmware',   type: 'string', role: 'info.firmware', unit: undefined },
-	{ id: 'core_rssi',         name: 'Core RSSI',         type: 'number', role: 'value.rssi',    unit: 'dBm'     },
-	{ id: 'core_firmware',     name: 'Core Firmware',     type: 'string', role: 'info.firmware', unit: undefined },
-	{ id: 'battery_level',     name: 'Battery Level',     type: 'number', role: 'value.battery', unit: '%'       },
-	{ id: 'power_status',      name: 'Power Status',      type: 'string', role: 'info.status',   unit: undefined },
-	{ id: 'attachment_status', name: 'Attachment Status', type: 'string', role: 'info.status',   unit: undefined },
+	{ id: 'id', name: 'Device ID', type: 'string', role: 'info.serial', unit: undefined },
+	{ id: 'meter_number', name: 'Meter Number', type: 'string', role: 'info.serial', unit: undefined },
+	{ id: 'bridge_rssi', name: 'Bridge WiFi RSSI', type: 'number', role: 'value.rssi', unit: 'dBm' },
+	{ id: 'bridge_firmware', name: 'Bridge Firmware', type: 'string', role: 'info.firmware', unit: undefined },
+	{ id: 'core_rssi', name: 'Core RSSI', type: 'number', role: 'value.rssi', unit: 'dBm' },
+	{ id: 'core_firmware', name: 'Core Firmware', type: 'string', role: 'info.firmware', unit: undefined },
+	{ id: 'battery_level', name: 'Battery Level', type: 'number', role: 'value.battery', unit: '%' },
+	{ id: 'power_status', name: 'Power Status', type: 'string', role: 'info.status', unit: undefined },
+	{ id: 'attachment_status', name: 'Attachment Status', type: 'string', role: 'info.status', unit: undefined },
 ];
 
 class Iometer extends utils.Adapter {
@@ -59,7 +59,9 @@ class Iometer extends utils.Adapter {
 	 * @param {string} meterNumber
 	 */
 	async _ensureObjects(meterNumber) {
-		if (this._initializedMeters.has(meterNumber)) return;
+		if (this._initializedMeters.has(meterNumber)) {
+			return;
+		}
 		this._initializedMeters.add(meterNumber);
 
 		const readingChannel = `reading-${meterNumber}`;
@@ -70,7 +72,14 @@ class Iometer extends utils.Adapter {
 		});
 		await this.setObjectNotExistsAsync(`${readingChannel}.power`, {
 			type: 'state',
-			common: { name: 'Current Power', type: 'number', role: 'value.power.active', unit: 'W', read: true, write: false },
+			common: {
+				name: 'Current Power',
+				type: 'number',
+				role: 'value.power.active',
+				unit: 'W',
+				read: true,
+				write: false,
+			},
 			native: {},
 		});
 		for (const { id } of OBIS_MAP) {
@@ -91,7 +100,9 @@ class Iometer extends utils.Adapter {
 		});
 		for (const def of DEVICE_STATES) {
 			const common = { name: def.name, type: def.type, role: def.role, read: true, write: false };
-			if (def.unit) common.unit = def.unit;
+			if (def.unit) {
+				common.unit = def.unit;
+			}
 			await this.setObjectNotExistsAsync(`${deviceChannel}.${def.id}`, { type: 'state', common, native: {} });
 		}
 
@@ -104,7 +115,7 @@ class Iometer extends utils.Adapter {
 
 		this._readingSource = new EventSource(url);
 
-		this._readingSource.addEventListener('readingEvent', async (event) => {
+		this._readingSource.addEventListener('readingEvent', async event => {
 			try {
 				const data = JSON.parse(event.data);
 				const meterNumber = data.meter?.number || 'unknown';
@@ -122,7 +133,7 @@ class Iometer extends utils.Adapter {
 			this.log.info('Reading stream connected');
 		};
 
-		this._readingSource.onerror = (err) => {
+		this._readingSource.onerror = err => {
 			this.log.warn(`Reading stream error (will retry): ${JSON.stringify(err)}`);
 			this.setState('info.connection', false, true);
 		};
@@ -134,7 +145,7 @@ class Iometer extends utils.Adapter {
 
 		this._statusSource = new EventSource(url);
 
-		this._statusSource.addEventListener('statusEvent', async (event) => {
+		this._statusSource.addEventListener('statusEvent', async event => {
 			try {
 				const data = JSON.parse(event.data);
 				const meterNumber = data.meter?.number || 'unknown';
@@ -151,7 +162,7 @@ class Iometer extends utils.Adapter {
 			this.log.info('Status stream connected');
 		};
 
-		this._statusSource.onerror = (err) => {
+		this._statusSource.onerror = err => {
 			this.log.warn(`Status stream error (will retry): ${JSON.stringify(err)}`);
 		};
 	}
@@ -175,7 +186,7 @@ class Iometer extends utils.Adapter {
 }
 
 if (require.main !== module) {
-	module.exports = (options) => new Iometer(options);
+	module.exports = options => new Iometer(options);
 } else {
 	new Iometer();
 }
