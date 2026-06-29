@@ -14,7 +14,8 @@
     "smart meter",
     "electricity",
     "zero feed-in",
-    "zero export"
+    "zero export",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
