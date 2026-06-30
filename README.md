@@ -1,4 +1,5 @@
-![Logo](admin/iometer.png)
+<img src="admin/iometer.png" width="128" alt="IOmeter Logo" />
+
 # ioBroker.iometer
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.iometer.svg)](https://www.npmjs.com/package/iobroker.iometer)
@@ -12,87 +13,82 @@
 
 ## iometer adapter for ioBroker
 
-ioBroker adapter for the IOmeter smart metering device
+**_This adapter requires at least Node.js 20.x!_**
 
-## Developer manual
-This section is intended for the developer. It can be deleted later.
+Connects ioBroker to the [IOmeter](https://www.iometer.de) smart metering device and provides real-time electricity readings via Server-Sent Events (SSE). Meter readings and device status are updated live as soon as the device reports them.
 
-### DISCLAIMER
+## Install
 
-Please make sure that you consider copyrights and trademarks when you use names or logos of a company and add a disclaimer to your README.
-You can check other adapters for examples or ask in the developer community. Using a name or logo of a company without permission may cause legal problems for you.
+Install this adapter via ioBroker Admin:
 
-### Getting started
+1. Open the adapter list and search for **IOmeter**
+2. Click **Install**
+3. Create an instance of the IOmeter adapter
+4. Enter the IP address of your IOmeter device and save
+5. The connection to the device is established automatically and the data is stored in the corresponding chanels
 
-You are almost done, only a few steps left:
-1. Clone the repository from GitHub to a directory on your PC:
-	```bash
-	git clone https://github.com/torben-iometer/ioBroker.iometer
-	```
+## Configuration
 
-1. Head over to [main.js](main.js) and start programming!
+### IOmeter IP Address
 
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
+The local IP address of your IOmeter device (e.g. `192.168.1.100`). This can be found in the device infos in the IOmeter app.
 
-### State Roles
-When creating state objects, it is important to use the correct role for the state. The role defines how the state should be interpreted by visualizations and other adapters. For a list of available roles and their meanings, please refer to the [state roles documentation](https://www.iobroker.net/#en/documentation/dev/stateroles.md).
+The adapter connects to `http://<ip>/v1/reading` and `http://<ip>/v1/status` via SSE. Both streams reconnect automatically if the connection is lost.
 
-**Important:** Do not invent your own custom role names. If you need a role that is not part of the official list, please contact the ioBroker developer community for guidance and discussion about adding new roles.
+## States
 
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description |
-|-------------|-------------|
-| `test:js` | Executes the tests you defined in `*.test.js` files. |
-| `test:package` | Ensures your `package.json` and `io-package.json` are valid. |
-| `test:integration` | Tests the adapter startup with an actual instance of ioBroker. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `check` | Performs a type-check on your code (without compiling anything). |
-| `lint` | Runs `ESLint` to check your code for formatting errors and potential bugs. |
-| `translate` | Translates texts in your adapter to all required languages, see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-translations) for more details. |
-| `release` | Creates a new release, see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#usage) for more details. |
+The adapter creates state objects dynamically on the first received event. The meter number reported by the device is used as a channel prefix to distinguish in case of multiple instances for diiferent meters.
 
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
+State IDs follow the format:
 
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-Using GitHub Actions, you can enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. We **strongly recommend** that you do. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-Since you installed the release script, you can create a new
-release simply by calling:
-```bash
-npm run release
 ```
-Additional command line options for the release script are explained in the
-[release-script documentation](https://github.com/AlCalzone/release-script#command-line).
-
-To get your adapter released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually with dev-server
-Please use `dev-server` to test and debug your adapter.
-
-You may install and start `dev-server` by calling from your dev directory:
-```bash
-npm install --global @iobroker/dev-server
-dev-server setup
-dev-server watch
+iometer.<instance>.<channel>-<meterNumber>.<state>
 ```
 
-Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev-server#readme) for more details.
+- `<instance>` — ioBroker adapter instance index (usually `0`)
+- `<channel>` — either `reading` (meter data), `device` (hardware status) or `info` (connection status)
+- `<meterNumber>` — the meter serial number as reported by the device (e.g. `1ISK04051904`)
+- `<state>` — the individual data point (see below)
+
+### Reading channel (`reading-<meterNumber>`)
+
+Populated from the `/v1/reading` SSE stream (event type `readingEvent`).
+
+| State | Type | Unit | Role | Description |
+|---|---|---|---|---|
+| `power` | number | W | `value.power.active` | Current total active power. Uses the sum OBIS value when available, falls back to Phase 1 for single-phase meters. |
+| `power_phase1` | number | W | `value.power.active` | Active power on Phase L1 |
+| `power_phase2` | number | W | `value.power.active` | Active power on Phase L2 |
+| `power_phase3` | number | W | `value.power.active` | Active power on Phase L3 |
+| `energy_imported` | number | kWh | `value.energy.consumed` | Total imported energy |
+| `energy_exported` | number | kWh | `value.energy.produced` | Total exported energy |
+| `energy_imported_t1` | number | kWh | `value.energy.consumed` | Imported energy — Tariff 1 |
+| `energy_imported_t2` | number | kWh | `value.energy.consumed` | Imported energy — Tariff 2 |
+
+### Device channel (`device-<meterNumber>`)
+
+Populated from the `/v1/status` SSE stream (event type `statusEvent`).
+
+| State | Type | Unit | Role | Description |
+|---|---|---|---|---|
+| `id` | string | — | `info.serial` | Unique device ID |
+| `meter_number` | string | — | `info.serial` | Meter serial number |
+| `bridge_rssi` | number | dBm | `value.rssi` | WiFi signal strength of the bridge module |
+| `bridge_firmware` | string | — | `info.firmware` | Firmware version of the bridge module |
+| `core_rssi` | number | dBm | `value.rssi` | RF signal strength between core and bridge |
+| `core_firmware` | string | — | `info.firmware` | Firmware version of the core module |
+| `battery_level` | number | % | `value.battery` | Battery level of the core module |
+| `power_status` | string | — | `info.status` | Power supply status (e.g. `wired`, `battery`) |
+| `attachment_status` | string | — | `info.status` | Attachment status of the core module |
+
+### Connection state
+
+| State | Description |
+|---|---|
+| `info.connection` | `true` when the reading stream is receiving data, `false` otherwise |
 
 ## Changelog
+
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
@@ -102,6 +98,7 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
 * (torben-iometer) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2026 torben-iometer <torben@iometer.de>
