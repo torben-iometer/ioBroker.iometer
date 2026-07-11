@@ -97,6 +97,8 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 ### **WORK IN PROGRESS**
 * (torben-iometer) initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
