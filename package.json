@@ -22,7 +22,7 @@
     "url": "git@github.com:torben-iometer/ioBroker.iometer.git"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.1",

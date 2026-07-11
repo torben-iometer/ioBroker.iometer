@@ -95,6 +95,7 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 -->
 
 ### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22 now
 * (torben-iometer) initial release
 
 ## License
