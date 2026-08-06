@@ -1,7 +1,7 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const EventSource = require('eventsource');
+const { EventSource } = require('eventsource');
 const { parseReading, parseStatus, OBIS_MAP } = require('./lib/iometer-parser');
 
 const OBIS_META = {
