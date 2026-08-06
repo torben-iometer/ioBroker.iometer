@@ -96,6 +96,8 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 
 ### **WORK IN PROGRESS**
 - (ioBroker-Bot) Adapter requires admin >= 7.8.23 now.
+
+### 0.0.1 (2026-06-30)
 * (torben-iometer) initial release
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
