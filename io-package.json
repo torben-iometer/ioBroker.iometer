@@ -3,6 +3,19 @@
     "name": "iometer",
     "version": "0.0.1",
     "news": {
+      "0.0.2": {
+        "en": "Adapter requires admin >= 7.8.23 now.",
+        "de": "Der Adapter benötigt jetzt Admin >= 7.8.23.",
+        "ru": "Адаптеру теперь требуется admin >= 7.8.23.",
+        "pt": "O adaptador agora requer admin >= 7.8.23.",
+        "nl": "Adapter vereist nu admin >= 7.8.23.",
+        "fr": "L'adaptateur nécessite désormais admin >= 7.8.23.",
+        "it": "L'adattatore richiede ora admin >= 7.8.23.",
+        "es": "El adaptador ahora requiere admin >= 7.8.23.",
+        "pl": "Adapter wymaga teraz admin >= 7.8.23.",
+        "uk": "Адаптеру тепер потрібен admin >= 7.8.23.",
+        "zh-cn": "适配器现在需要 admin >= 7.8.23。"
+      },
       "0.0.1": {
         "en": "initial release",
         "de": "Erstveröffentlichung",
