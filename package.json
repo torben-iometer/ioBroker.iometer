@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:torben-iometer/ioBroker.iometer.git"
+    "url": "git+https://github.com/torben-iometer/ioBroker.iometer.git"
   },
   "engines": {
     "node": ">= 22"
