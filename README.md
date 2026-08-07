@@ -13,7 +13,7 @@
 
 ## iometer adapter for ioBroker
 
-**_This adapter requires at least Node.js 20.x!_**
+**_This adapter requires at least Node.js 22.x!_**
 
 Connects ioBroker to the [IOmeter](https://www.iometer.de) smart metering device and provides real-time electricity readings via Server-Sent Events (SSE). Meter readings and device status are updated live as soon as the device reports them.
 
