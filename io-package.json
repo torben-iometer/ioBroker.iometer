@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "iometer",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "news": {
       "0.0.3": {
         "en": "Fixed the release workflow (removed the broken Sentry release step, corrected the repository URL format) and the outdated Node.js version requirement in the README.",
