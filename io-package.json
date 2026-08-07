@@ -3,6 +3,19 @@
     "name": "iometer",
     "version": "0.0.2",
     "news": {
+      "0.0.3": {
+        "en": "Fixed the release workflow (removed the broken Sentry release step, corrected the repository URL format) and the outdated Node.js version requirement in the README.",
+        "de": "Den Release-Workflow korrigiert (fehlerhaften Sentry-Release-Schritt entfernt, Repository-URL-Format korrigiert) und die veraltete Node.js-Versionsanforderung in der README behoben.",
+        "ru": "Исправлен workflow релиза (удален неработающий шаг Sentry-релиза, исправлен формат URL репозитория) и устаревшее требование к версии Node.js в README.",
+        "pt": "Corrigido o workflow de lançamento (removida a etapa de release do Sentry que estava falhando, corrigido o formato da URL do repositório) e o requisito de versão do Node.js desatualizado no README.",
+        "nl": "De release-workflow gecorrigeerd (defecte Sentry-release-stap verwijderd, repository-URL-formaat gecorrigeerd) en de verouderde Node.js-versievereiste in de README verholpen.",
+        "fr": "Correction du workflow de publication (suppression de l'étape Sentry défectueuse, correction du format de l'URL du dépôt) et de l'exigence de version Node.js obsolète dans le README.",
+        "it": "Corretto il workflow di release (rimosso il passaggio Sentry non funzionante, corretto il formato dell'URL del repository) e il requisito obsoleto della versione di Node.js nel README.",
+        "es": "Corregido el flujo de publicación (eliminado el paso de Sentry que fallaba, corregido el formato de la URL del repositorio) y el requisito obsoleto de la versión de Node.js en el README.",
+        "pl": "Naprawiono przepływ wydania (usunięto uszkodzony krok Sentry, poprawiono format adresu URL repozytorium) oraz nieaktualny wymóg wersji Node.js w README.",
+        "uk": "Виправлено робочий процес релізу (видалено непрацюючий крок Sentry, виправлено формат URL репозиторію) та застарілу вимогу до версії Node.js у README.",
+        "zh-cn": "修复了发布工作流(移除了有问题的 Sentry 发布步骤,修正了仓库 URL 格式),并修复了 README 中过时的 Node.js 版本要求。"
+      },
       "0.0.2": {
         "en": "Adapter requires admin >= 7.8.23 now.",
         "de": "Der Adapter benötigt jetzt Admin >= 7.8.23.",
