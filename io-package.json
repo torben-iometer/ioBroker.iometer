@@ -3,6 +3,19 @@
     "name": "iometer",
     "version": "0.0.3",
     "news": {
+      "0.0.4": {
+        "en": "Changed the state role for `bridge_rssi` and `core_rssi` from the non-existent `value.rssi` to the generic `value` role.",
+        "de": "Die Statusrolle für `bridge_rssi` und `core_rssi` wurde von der nicht existierenden `value.rssi` auf die generische Rolle `value` geändert.",
+        "ru": "Роль состояния для `bridge_rssi` и `core_rssi` изменена с несуществующей `value.rssi` на универсальную роль `value`.",
+        "pt": "A role de estado para `bridge_rssi` e `core_rssi` foi alterada da role inexistente `value.rssi` para a role genérica `value`.",
+        "nl": "De statusrol voor `bridge_rssi` en `core_rssi` is gewijzigd van de niet-bestaande `value.rssi` naar de generieke rol `value`.",
+        "fr": "Le rôle d'état pour `bridge_rssi` et `core_rssi` a été remplacé par le rôle générique `value` au lieu du rôle inexistant `value.rssi`.",
+        "it": "Il ruolo di stato per `bridge_rssi` e `core_rssi` è stato cambiato dal ruolo inesistente `value.rssi` al ruolo generico `value`.",
+        "es": "El rol de estado para `bridge_rssi` y `core_rssi` se cambió del rol inexistente `value.rssi` al rol genérico `value`.",
+        "pl": "Rola stanu dla `bridge_rssi` i `core_rssi` została zmieniona z nieistniejącej roli `value.rssi` na ogólną rolę `value`.",
+        "uk": "Роль стану для `bridge_rssi` та `core_rssi` змінено з неіснуючої `value.rssi` на загальну роль `value`.",
+        "zh-cn": "将 `bridge_rssi` 和 `core_rssi` 的状态角色从不存在的 `value.rssi` 更改为通用角色 `value`。"
+      },
       "0.0.3": {
         "en": "Fixed the release workflow (removed the broken Sentry release step, corrected the repository URL format) and the outdated Node.js version requirement in the README.",
         "de": "Den Release-Workflow korrigiert (fehlerhaften Sentry-Release-Schritt entfernt, Repository-URL-Format korrigiert) und die veraltete Node.js-Versionsanforderung in der README behoben.",
