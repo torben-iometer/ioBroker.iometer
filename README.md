@@ -73,9 +73,9 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 |---|---|---|---|---|
 | `id` | string | — | `info.serial` | Unique device ID |
 | `meter_number` | string | — | `info.serial` | Meter serial number |
-| `bridge_rssi` | number | dBm | `value.rssi` | WiFi signal strength of the bridge module |
+| `bridge_rssi` | number | dBm | `value` | WiFi signal strength of the bridge module |
 | `bridge_firmware` | string | — | `info.firmware` | Firmware version of the bridge module |
-| `core_rssi` | number | dBm | `value.rssi` | RF signal strength between core and bridge |
+| `core_rssi` | number | dBm | `value` | RF signal strength between core and bridge |
 | `core_firmware` | string | — | `info.firmware` | Firmware version of the core module |
 | `battery_level` | number | % | `value.battery` | Battery level of the core module |
 | `power_status` | string | — | `info.status` | Power supply status (e.g. `wired`, `battery`) |
