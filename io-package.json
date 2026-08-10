@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "iometer",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "news": {
       "0.0.4": {
         "en": "Changed the state role for `bridge_rssi` and `core_rssi` from the non-existent `value.rssi` to the generic `value` role.",

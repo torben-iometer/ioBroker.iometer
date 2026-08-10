@@ -93,7 +93,7 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.4 (2026-08-10)
 - (torben-iometer) Changed the state role for `bridge_rssi` and `core_rssi` from the non-existent `value.rssi` to the generic `value` role.
 
 ### 0.0.3 (2026-08-07)
