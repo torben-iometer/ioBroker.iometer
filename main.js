@@ -18,9 +18,9 @@ const OBIS_META = {
 const DEVICE_STATES = [
 	{ id: 'id', name: 'Device ID', type: 'string', role: 'info.serial', unit: undefined },
 	{ id: 'meter_number', name: 'Meter Number', type: 'string', role: 'info.serial', unit: undefined },
-	{ id: 'bridge_rssi', name: 'Bridge WiFi RSSI', type: 'number', role: 'value.rssi', unit: 'dBm' },
+	{ id: 'bridge_rssi', name: 'Bridge WiFi RSSI', type: 'number', role: 'value', unit: 'dBm' },
 	{ id: 'bridge_firmware', name: 'Bridge Firmware', type: 'string', role: 'info.firmware', unit: undefined },
-	{ id: 'core_rssi', name: 'Core RSSI', type: 'number', role: 'value.rssi', unit: 'dBm' },
+	{ id: 'core_rssi', name: 'Core RSSI', type: 'number', role: 'value', unit: 'dBm' },
 	{ id: 'core_firmware', name: 'Core Firmware', type: 'string', role: 'info.firmware', unit: undefined },
 	{ id: 'battery_level', name: 'Battery Level', type: 'number', role: 'value.battery', unit: '%' },
 	{ id: 'power_status', name: 'Power Status', type: 'string', role: 'info.status', unit: undefined },
