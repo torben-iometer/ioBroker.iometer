@@ -1,6 +1,7 @@
 {
 	"i18n": true,
 	"type": "panel",
+	"label": "iometer adapter settings",
 	"items": {
 		"iometerIp": {
 			"type": "text",
