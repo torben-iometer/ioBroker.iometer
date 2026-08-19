@@ -72,15 +72,15 @@
     "desc": {
       "en": "ioBroker adapter for the IOmeter smart metering device",
       "de": "ioBroker-Adapter für das IOmeter Smart-Metering-Gerät",
-      "ru": "ioBroker adapter for the IOmeter smart metering device",
-      "pt": "ioBroker adapter for the IOmeter smart metering device",
-      "nl": "ioBroker adapter for the IOmeter smart metering device",
-      "fr": "ioBroker adapter for the IOmeter smart metering device",
-      "it": "ioBroker adapter for the IOmeter smart metering device",
-      "es": "ioBroker adapter for the IOmeter smart metering device",
-      "pl": "ioBroker adapter for the IOmeter smart metering device",
-      "uk": "ioBroker adapter for the IOmeter smart metering device",
-      "zh-cn": "ioBroker adapter for the IOmeter smart metering device"
+      "ru": "Адаптер ioBroker для интеллектуального прибора учета IOmeter",
+      "pt": "Adaptador ioBroker para o dispositivo de medição inteligente IOmeter",
+      "nl": "ioBroker-adapter voor het slimme meetapparaat IOmeter",
+      "fr": "Adaptateur ioBroker pour le dispositif de comptage intelligent IOmeter",
+      "it": "Adattatore ioBroker per il dispositivo di misurazione intelligente IOmeter",
+      "es": "Adaptador ioBroker para el dispositivo de medición inteligente IOmeter",
+      "pl": "Adapter ioBroker do inteligentnego urządzenia pomiarowego IOmeter",
+      "uk": "Адаптер ioBroker для інтелектуального вимірювального пристрою IOmeter",
+      "zh-cn": "用于 IOmeter 智能计量设备的 ioBroker 适配器"
     },
     "authors": [
       "torben-iometer <torben@iometer.de>"
