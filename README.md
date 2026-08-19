@@ -94,6 +94,11 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+- (torben-iometer) Sanitized meter numbers before using them in object IDs to prevent invalid states when the device reports characters that are not allowed in ioBroker IDs.
+- (torben-iometer) Tightened the IP address validator in the adapter settings to reject invalid octets (e.g. `999.999.999.999`).
+- (torben-iometer) Improved error logging for the reading/status streams to show the actual error message instead of an unhelpful JSON dump.
+- (torben-iometer) Added missing translations for the adapter description.
+- (torben-iometer) Removed the unused visualization widget stub.
 
 ### 0.0.4 (2026-08-10)
 - (torben-iometer) Changed the state role for `bridge_rssi` and `core_rssi` from the non-existent `value.rssi` to the generic `value` role.
