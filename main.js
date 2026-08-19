@@ -2,7 +2,7 @@
 
 const utils = require('@iobroker/adapter-core');
 const { EventSource } = require('eventsource');
-const { parseReading, parseStatus, OBIS_MAP } = require('./lib/iometer-parser');
+const { parseReading, parseStatus, sanitizeMeterNumber, OBIS_MAP } = require('./lib/iometer-parser');
 
 const OBIS_META = {
 	power_phase1: { name: 'Power Phase 1', unit: 'W', role: 'value.power.active' },
@@ -118,7 +118,7 @@ class Iometer extends utils.Adapter {
 		this._readingSource.addEventListener('readingEvent', async event => {
 			try {
 				const data = JSON.parse(event.data);
-				const meterNumber = data.meter?.number || 'unknown';
+				const meterNumber = sanitizeMeterNumber(data.meter?.number || 'unknown');
 				await this._ensureObjects(meterNumber);
 				for (const { id, val } of parseReading(data, meterNumber)) {
 					this.setState(id, { val, ack: true });
@@ -148,7 +148,7 @@ class Iometer extends utils.Adapter {
 		this._statusSource.addEventListener('statusEvent', async event => {
 			try {
 				const data = JSON.parse(event.data);
-				const meterNumber = data.meter?.number || 'unknown';
+				const meterNumber = sanitizeMeterNumber(data.meter?.number || 'unknown');
 				await this._ensureObjects(meterNumber);
 				for (const { id, val } of parseStatus(data, meterNumber)) {
 					this.setState(id, { val, ack: true });

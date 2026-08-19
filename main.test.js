@@ -2,7 +2,7 @@
 'use strict';
 
 const { expect } = require('chai');
-const { parseReading, parseStatus } = require('./lib/iometer-parser');
+const { parseReading, parseStatus, sanitizeMeterNumber } = require('./lib/iometer-parser');
 
 const METER = '1ISK04051904';
 
@@ -225,5 +225,27 @@ describe('parseStatus', () => {
 			meterNumber:      'MSN-9999',
 		}), METER);
 		expect(result).to.have.length(9);
+	});
+});
+
+describe('sanitizeMeterNumber', () => {
+	it('leaves a normal meter number unchanged', () => {
+		expect(sanitizeMeterNumber('MSN-1234567')).to.equal('MSN-1234567');
+	});
+
+	it('replaces whitespace with underscores', () => {
+		expect(sanitizeMeterNumber('MSN 1234 567')).to.equal('MSN_1234_567');
+	});
+
+	it('replaces dots with underscores to avoid unintended object hierarchy', () => {
+		expect(sanitizeMeterNumber('12.34.56')).to.equal('12_34_56');
+	});
+
+	it('strips characters forbidden in ioBroker object IDs', () => {
+		expect(sanitizeMeterNumber('MSN*1234?567')).to.equal('MSN1234567');
+	});
+
+	it('handles a combination of whitespace, dots and forbidden characters', () => {
+		expect(sanitizeMeterNumber('MSN 12.34*56?')).to.equal('MSN_12_3456');
 	});
 });
