@@ -134,7 +134,7 @@ class Iometer extends utils.Adapter {
 		};
 
 		this._readingSource.onerror = err => {
-			this.log.warn(`Reading stream error (will retry): ${JSON.stringify(err)}`);
+			this.log.warn(`Reading stream error (will retry): ${err.message || JSON.stringify(err)}`);
 			this.setState('info.connection', false, true);
 		};
 	}
@@ -163,7 +163,7 @@ class Iometer extends utils.Adapter {
 		};
 
 		this._statusSource.onerror = err => {
-			this.log.warn(`Status stream error (will retry): ${JSON.stringify(err)}`);
+			this.log.warn(`Status stream error (will retry): ${err.message || JSON.stringify(err)}`);
 		};
 	}
 
