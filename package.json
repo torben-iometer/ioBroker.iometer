@@ -1,6 +1,6 @@
 {
   "name": "iobroker.iometer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "ioBroker adapter for the IOmeter smart metering device",
   "author": {
     "name": "torben-iometer",
