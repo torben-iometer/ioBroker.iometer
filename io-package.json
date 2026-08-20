@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "iometer",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "news": {
+      "0.0.6": {
+        "en": "Fixed the adapter crashing on startup with `ERR_PACKAGE_PATH_NOT_EXPORTED` on installations where an older `@iobroker/adapter-core` version got hoisted into node_modules.",
+        "de": "Der Adapter stürzte beim Start mit der Fehlermeldung `ERR_PACKAGE_PATH_NOT_EXPORTED` ab, wenn eine ältere Version von `@iobroker/adapter-core` in node_modules verschoben wurde.",
+        "ru": "Исправлена ошибка, приводившая к сбою адаптера при запуске с ошибкой `ERR_PACKAGE_PATH_NOT_EXPORTED` в установках, где в папку node_modules была добавлена более старая версия `@iobroker/adapter-core`.",
+        "pt": "Corrigido o problema que causava o travamento do adaptador na inicialização com o erro `ERR_PACKAGE_PATH_NOT_EXPORTED` em instalações onde uma versão antiga do `@iobroker/adapter-core` havia sido incluída no diretório `node_modules`.",
+        "nl": "Het probleem waarbij de adapter bij het opstarten vastliep met de foutmelding `ERR_PACKAGE_PATH_NOT_EXPORTED` is opgelost in installaties waar een oudere versie van `@iobroker/adapter-core` in de node_modules-map terechtkwam.",
+        "fr": "Correction d'un problème de plantage de l'adaptateur au démarrage avec l'erreur `ERR_PACKAGE_PATH_NOT_EXPORTED` sur les installations où une ancienne version de `@iobroker/adapter-core` était remontée dans node_modules.",
+        "it": "Risolto il problema per cui l'adattatore si bloccava all'avvio con l'errore `ERR_PACKAGE_PATH_NOT_EXPORTED` nelle installazioni in cui una versione precedente di `@iobroker/adapter-core` era stata inserita nella cartella node_modules.",
+        "es": "Se solucionó el problema por el cual el adaptador fallaba al iniciarse con el error `ERR_PACKAGE_PATH_NOT_EXPORTED` en instalaciones donde una versión anterior de `@iobroker/adapter-core` se había incorporado a node_modules.",
+        "pl": "Naprawiono błąd powodujący zawieszanie się adaptera podczas uruchamiania z błędem `ERR_PACKAGE_PATH_NOT_EXPORTED` w instalacjach, w których starsza wersja `@iobroker/adapter-core` została przeniesiona do node_modules.",
+        "uk": "Виправлено збій адаптера під час запуску з помилкою `ERR_PACKAGE_PATH_NOT_EXPORTED` на інсталяціях, де старіша версія `@iobroker/adapter-core` була піднята до node_modules.",
+        "zh-cn": "修复了在安装过程中，当较旧的 `@iobroker/adapter-core` 版本被提升到 node_modules 中时，适配器在启动时崩溃并出现 `ERR_PACKAGE_PATH_NOT_EXPORTED` 错误的问题。"
+      },
       "0.0.5": {
         "en": "Sanitized meter numbers before using them in object IDs to prevent invalid states when the device reports characters that are not allowed in ioBroker IDs.\nTightened the IP address validator in the adapter settings to reject invalid octets (e.g. `999.999.999.999`).\nImproved error logging for the reading/status streams to show the actual error message instead of an unhelpful JSON dump.\nAdded missing translations for the adapter description.\nRemoved the unused visualization widget stub.",
         "de": "Die Zählernummern werden vor ihrer Verwendung in Objekt-IDs bereinigt, um ungültige Zustände zu vermeiden, wenn das Gerät Zeichen meldet, die in ioBroker-IDs nicht zulässig sind.\nDie IP-Adressprüfung in den Adaptereinstellungen wurde verschärft, um ungültige Oktette (z. B. `999.999.999.999`) abzulehnen.\nVerbesserte Fehlerprotokollierung für die Lese-/Status-Streams, um die tatsächliche Fehlermeldung anstelle eines nichtssagenden JSON-Dumps anzuzeigen.\nFehlende Übersetzungen für die Adapterbeschreibung hinzugefügt.\nDer ungenutzte Visualisierungs-Widget-Stub wurde entfernt.",

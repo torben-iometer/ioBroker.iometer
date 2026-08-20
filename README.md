@@ -93,7 +93,7 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.6 (2026-08-20)
 - (torben-iometer) Fixed the adapter crashing on startup with `ERR_PACKAGE_PATH_NOT_EXPORTED` on installations where an older `@iobroker/adapter-core` version got hoisted into node_modules.
 
 ### 0.0.5 (2026-08-19)
@@ -111,9 +111,6 @@ Populated from the `/v1/status` SSE stream (event type `statusEvent`).
 
 ### 0.0.2 (2026-08-07)
 - (ioBroker-Bot) Adapter requires admin >= 7.8.23 now.
-
-### 0.0.1 (2026-06-30)
-* (torben-iometer) initial release
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
